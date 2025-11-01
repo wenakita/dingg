@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "biome check src",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "prisma generate || echo 'Prisma generation skipped'"
   },
   "overrides": {
     "@solana/kit": "2.3.0"
@@ -21,6 +22,7 @@
     "@farcaster/miniapp-sdk": "^0.2.1",
     "@farcaster/miniapp-wagmi-connector": "^1.1.0",
     "@mui/material": "^7.3.4",
+    "@prisma/client": "^6.18.0",
     "@tailwindcss/vite": "^4.1.16",
     "@tanstack/react-query": "5.45.1",
     "react": "^18.3.1",
@@ -38,6 +40,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.2.1",
     "@wagmi/cli": "latest",
+    "prisma": "^6.18.0",
     "typescript": "^5.4.5",
     "vite": "^5.2.11"
   }

@@ -1,0 +1,65 @@
+// Dingg - Farcaster Mini App Schema
+// Database for user data and app interactions
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - Farcaster users
+model User {
+  id        String   @id @default(cuid())
+  fid       Int      @unique // Farcaster ID
+  username  String?  // Farcaster username
+  address   String?  // Ethereum address (if connected)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  interactions Interaction[]
+  
+  @@index([fid])
+  @@index([address])
+}
+
+// Interaction model - track app usage
+model Interaction {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  // Interaction details
+  action    String   // "open" | "close" | "click" | "share" | "custom"
+  data      String?  @db.Text // JSON data for custom actions
+  
+  // Metadata
+  timestamp DateTime @default(now())
+  
+  @@index([userId])
+  @@index([action])
+  @@index([timestamp])
+}
+
+// Frame model - track frame renders (optional)
+model Frame {
+  id        String   @id @default(cuid())
+  
+  // Frame details
+  imageUrl  String
+  buttonUrl String?
+  buttonText String?
+  
+  // Analytics
+  views     Int      @default(0)
+  clicks    Int      @default(0)
+  
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([createdAt])
+}
+
